@@ -35,7 +35,7 @@ jobs:
         dotnet test "${{ github.workspace }}/mywebapp/mywebapp.sln" --no-restore --verbosity normal  --logger "trx;LogFileName=test-results.trx"
 
     - name: Test Report
-      uses: dorny/test-reporter@v1.9.1 
+      uses: dorny/test-reporter@v1.5.0
       if: success() || failure()    # run this step even if previous step failed
       with:
         name: XUnit Tests            # Name of the check run which will be created
@@ -47,10 +47,13 @@ jobs:
         dotnet publish "${{ github.workspace }}/mywebapp/src/mywebapp.csproj" -c Release -o mywebapp
     
     - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v4  
+      uses: actions/upload-artifact@v4
       with:
+        # Artifact name
         name: mywebappbuildartifacts
+        # A file, directory or wildcard pattern that describes what to upload
         path: mywebapp/**
+        # The desired behavior if no files are found using the provided path.
         if-no-files-found: error
+        # Duration after which artifact will expire in days. 0 means using default retention.
         retention-days: 90
-
