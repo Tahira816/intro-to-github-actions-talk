@@ -22,7 +22,9 @@ jobs:
     - name: Setup .NET Core 5
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: |
+          5.0
+          6.0
     
     - name: Install dependencies
       run: dotnet restore "${{ github.workspace }}/mywebapp/mywebapp.sln"
