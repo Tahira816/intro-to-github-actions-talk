@@ -43,13 +43,17 @@ jobs:
         dotnet publish "${{ github.workspace }}/mywebapp/src/mywebapp.csproj" -c Release -o mywebapp
     
     - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v2.2.0
       with:
-       name: mywebappbuildartifacts
-       path: mywebapp/**
-  if-no-files-found: error
-  retention-days: 90
-      
+        # Artifact name
+        name: mywebappbuildartifacts
+        # A file, directory or wildcard pattern that describes what to upload
+        path: mywebapp/**
+        # The desired behavior if no files are found using the provided path.
+        if-no-files-found: error
+        # Duration after which artifact will expire in days. 0 means using default retention.
+        retention-days: 90
+
 
   deploy-DEV:
     name: "Deploy To Azure DEV env"
@@ -77,10 +81,12 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
     
     - name: Download a Build Artifact
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v2.0.8
       with:
-       name: 'mywebappbuildartifacts'
-       path: 'mywebappbuildartifacts'
+        # Artifact name
+        name: 'mywebappbuildartifacts'
+        # Destination path
+        path: 'mywebappbuildartifacts'
    
     # Deploy to Azure Web apps
     - name: 'Run Azure webapp deploy action using publish profile credentials'
@@ -116,10 +122,12 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
     
     - name: Download a Build Artifact
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v2.0.8
       with:
-       name: 'mywebappbuildartifacts'
-       path: 'mywebappbuildartifacts'
+        # Artifact name
+        name: 'mywebappbuildartifacts'
+        # Destination path
+        path: 'mywebappbuildartifacts'
    
     # Deploy to Azure Web apps
     - name: 'Run Azure webapp deploy action using publish profile credentials'
@@ -156,10 +164,12 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
     
     - name: Download a Build Artifact
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v2.0.8
       with:
-       name: 'mywebappbuildartifacts'
-       path: 'mywebappbuildartifacts'
+        # Artifact name
+        name: 'mywebappbuildartifacts'
+        # Destination path
+        path: 'mywebappbuildartifacts'
    
     # Deploy to Azure Web apps
     - name: 'Run Azure webapp deploy action using publish profile credentials'
