@@ -8,14 +8,18 @@ on:
   
 jobs:
   build-app:
-    - name: Install OpenSSL
-      run: sudo apt-get update && sudo apt-get install -y libssl-dev
+    name: "Build App"
 
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      
     - name: Setup .NET Core 5
-    uses: actions/setup-dotnet@v1
-  with:
-    dotnet-version: 5.0.x
-
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    
     - name: Install dependencies
       run: dotnet restore "${{ github.workspace }}/mywebapp/mywebapp.sln"
     
@@ -39,7 +43,7 @@ jobs:
         dotnet publish "${{ github.workspace }}/mywebapp/src/mywebapp.csproj" -c Release -o mywebapp
     
     - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v2.2.0
       with:
         # Artifact name
         name: mywebappbuildartifacts
@@ -77,7 +81,7 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
     
     - name: Download a Build Artifact
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v2.0.8
       with:
         # Artifact name
         name: 'mywebappbuildartifacts'
@@ -118,7 +122,7 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
     
     - name: Download a Build Artifact
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v2.0.8
       with:
         # Artifact name
         name: 'mywebappbuildartifacts'
