@@ -28,14 +28,22 @@ jobs:
     
     - name: Test
       run: |
-        dotnet test "${{ github.workspace }}/mywebapp/mywebapp.sln" --no-restore --verbosity normal  --logger "trx;LogFileName=test-results.trx"
+        dotnet test "${{ github.workspace }}/mywebapp/mywebapp.sln" \
+          --no-restore \
+          --verbosity normal \
+          --logger "trx;LogFileName=test-results.trx" \
+          --results-directory "${{ github.workspace }}/TestResults"
+
+    - name: Debug - List TestResults
+      if: success() || failure()
+      run: find ${{ github.workspace }} -name "*.trx" 2>/dev/null
 
     - name: Test Report
-      uses: dorny/test-reporter@v1.5.0
+      uses: dorny/test-reporter@v1
       if: success() || failure()
       with:
         name: XUnit Tests
-        path: ${{ github.workspace }}/mywebapp/tests/TestResults/*.trx
+        path: "${{ github.workspace }}/TestResults/*.trx"
         reporter: dotnet-trx
       
     - name: Publish
